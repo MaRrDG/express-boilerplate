@@ -26,17 +26,6 @@ class UsersController {
     }
   };
 
-  public createUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const userData = req.body;
-      const createUserData: User = await this.userService.createUser(userData);
-
-      res.status(201).json({ data: createUserData, message: "created" });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   public updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId: string = req.params.id;

@@ -1,9 +1,12 @@
+import { DocumentResult } from "@/generic/models/generic.model";
 import { model, Schema, Document } from "mongoose";
 
-export interface User {
+export interface User extends DocumentResult<User> {
   _id: string;
   email: string;
   password: string;
+
+  token?: string;
 }
 
 const userSchema: Schema = new Schema({
