@@ -1,5 +1,3 @@
-Sure! Here is a possible README.md description for the express typescript boilerplate you've described:
-
 # Express TypeScript REST API boilerplate with MongoDB and Mongoose
 
 This is a boilerplate for a REST API made with Express, TypeScript and MongoDB using Mongoose for CRUD operations. The endpoints implement a generic interface with the following methods: `getEntities`, `getEntityById`, `postEntity`, `patchEntity`, `putEntity`. The endpoints are divided into modules, each module having the following structure:
