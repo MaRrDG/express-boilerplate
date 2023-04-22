@@ -35,8 +35,6 @@ To get started, follow these steps:
 4. Start the development server with `npm run dev`.
 5. Start the production server with `npm run build` followed by `npm start`.
 
-Sure! Here's the roadmap in markdown format:
-
 ## Roadmap
 
 1. **Additional routes and examples** - Add more routes and examples to the existing modules to showcase the full capabilities of the boilerplate.
