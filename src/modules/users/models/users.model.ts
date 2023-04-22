@@ -9,7 +9,7 @@ export interface User extends DocumentResult<User> {
   token?: string;
 }
 
-const userSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema({
   email: {
     type: String,
     required: true,
@@ -21,6 +21,6 @@ const userSchema: Schema = new Schema({
   },
 });
 
-const userModel = model<User & Document>("User", userSchema);
+const UserModel = model<User & Document>("User", UserSchema);
 
-export default userModel;
+export default UserModel;

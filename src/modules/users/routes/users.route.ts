@@ -13,10 +13,11 @@ class UsersRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, checkToken, this.usersController.getUsers);
-    this.router.get(`${this.path}/:id`, checkToken, this.usersController.getUserById);
-    this.router.put(`${this.path}/:id`, checkToken, this.usersController.updateUser);
-    this.router.delete(`${this.path}/:id`, checkToken, this.usersController.deleteUser);
+    this.router.get(`${this.path}`, checkToken, this.usersController.getAll);
+    this.router.get(`${this.path}/:id`, checkToken, this.usersController.getById);
+    this.router.put(`${this.path}/:id`, checkToken, this.usersController.put);
+    this.router.patch(`${this.path}/:id`, checkToken, this.usersController.patch);
+    this.router.delete(`${this.path}/:id`, checkToken, this.usersController.delete);
   }
 }
 

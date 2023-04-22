@@ -1,45 +1,49 @@
 import { hash } from "bcrypt";
 import { APIError } from "@/generic/APIError";
-import userModel, { User } from "@/modules/users/models/users.model";
+import UserModel, { User } from "@/modules/users/models/users.model";
 import { isEmpty } from "@utils/util";
 import jwt from "jsonwebtoken";
+import UserService from "@modules/users/services/users.service";
+import { GenericService } from "@generic/models/generic.model";
 
-class AuthService {
-  public users = userModel;
+class AuthService implements GenericService {
+  public userModel = UserModel;
+  public userSerive = new UserService();
 
-  public async register(userData): Promise<any> {
-    if (isEmpty(userData)) throw new APIError(400, "userData is empty");
+  public async postEntity(requestData): Promise<User> {
+    const { data } = requestData;
+    const user = new UserModel(data);
+    const validation = user.validateSync();
 
-    if (userData.email) {
-      const findUser: User = await this.users.findOne({ email: userData.email });
-      if (findUser)
-        throw new APIError(409, `This email ${userData.email} already exists`);
-    }
+    if (validation?.errors)
+      throw new APIError(409, `Bad Request - Missing required fields`);
 
-    const user = await this.users.create(userData);
+    await this.userSerive.isEmailAvailable(data.email);
 
-    // Create token, scopes is the permission for that user, is not required.
-    const token = jwt.sign({ scopes: ["read:Users"] }, process.env.JWT_TOKEN, {
+    const newUser = await this.userModel.create(data);
+
+    // Generate JWT Token
+    const token = jwt.sign({}, process.env.JWT_TOKEN, {
       expiresIn: process.env.JWT_EXPIRE_TOKEN,
     });
 
-    return { ...user._doc, token };
+    return { ...newUser._doc, token };
   }
 
-  public async login(userData): Promise<User> {
-    if (isEmpty(userData) || !userData.email || !userData.password)
-      throw new APIError(400, "You need an email and a password for login in.");
+  public async getEntityById(requestData): Promise<User> {
+    const { data } = requestData;
 
-    const findUser: User = await this.users
+    const findUser: User = await this.userModel
       .findOne({
-        email: userData.email,
-        password: userData.password,
+        email: data.email,
+        password: data.password,
       })
       .exec();
+
     if (!findUser) throw new APIError(409, `Email or password is wrong.`);
 
-    // Create token, scopes is the permission for that user, is not required.
-    const token = jwt.sign({ scopes: ["read:Users"] }, process.env.JWT_TOKEN, {
+    // Generate JWT Token
+    const token = jwt.sign({}, process.env.JWT_TOKEN, {
       expiresIn: process.env.JWT_EXPIRE_TOKEN,
     });
 

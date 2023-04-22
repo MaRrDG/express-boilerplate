@@ -1,13 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "@modules/users/models/users.model";
 import AuthService from "../services/authentication.service";
+import { GenericController } from "@generic/models/generic.model";
 
-class AuthController {
+class AuthController implements GenericController {
   public authService = new AuthService();
 
-  public register = async (req: Request, res: Response, next: NextFunction) => {
+  public post = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const registerUser = await this.authService.register(req.body);
+      const requestData = {
+        data: req.body,
+      };
+
+      const registerUser = await this.authService.postEntity(requestData);
 
       res.status(200).json({ data: registerUser, message: "register" });
     } catch (error) {
@@ -15,9 +20,13 @@ class AuthController {
     }
   };
 
-  public login = async (req: Request, res: Response, next: NextFunction) => {
+  public getById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const loginUser: User = await this.authService.login(req.body);
+      const requestData = {
+        data: req.body,
+      };
+
+      const loginUser: User = await this.authService.getEntityById(requestData);
 
       res.status(200).json({ data: loginUser, message: "login" });
     } catch (error) {
