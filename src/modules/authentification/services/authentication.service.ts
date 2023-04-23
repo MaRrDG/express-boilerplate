@@ -1,14 +1,18 @@
-import { hash } from "bcrypt";
 import { APIError } from "@/generic/APIError";
 import UserModel, { User } from "@/modules/users/models/users.model";
-import { isEmpty } from "@utils/util";
 import jwt from "jsonwebtoken";
 import UserService from "@modules/users/services/users.service";
 import { GenericService } from "@generic/models/generic.model";
 
 class AuthService implements GenericService {
   public userModel = UserModel;
-  public userSerive = new UserService();
+  public userService = new UserService();
+
+  private generateToken(data?: object) {
+    return jwt.sign(data || {}, process.env.JWT_TOKEN, {
+      expiresIn: process.env.JWT_EXPIRE_TOKEN,
+    });
+  }
 
   public async postEntity(requestData): Promise<User> {
     const { data } = requestData;
@@ -18,14 +22,12 @@ class AuthService implements GenericService {
     if (validation?.errors)
       throw new APIError(409, `Bad Request - Missing required fields`);
 
-    await this.userSerive.isEmailAvailable(data.email);
+    await this.userService.isEmailAvailable(data.email);
 
     const newUser = await this.userModel.create(data);
 
     // Generate JWT Token
-    const token = jwt.sign({}, process.env.JWT_TOKEN, {
-      expiresIn: process.env.JWT_EXPIRE_TOKEN,
-    });
+    const token = this.generateToken();
 
     return { ...newUser._doc, token };
   }
@@ -43,9 +45,7 @@ class AuthService implements GenericService {
     if (!findUser) throw new APIError(409, `Email or password is wrong.`);
 
     // Generate JWT Token
-    const token = jwt.sign({}, process.env.JWT_TOKEN, {
-      expiresIn: process.env.JWT_EXPIRE_TOKEN,
-    });
+    const token = this.generateToken();
 
     return { ...findUser._doc, token };
   }

@@ -73,10 +73,9 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
+.env.production.local
 .env.development.local
 .env.test.local
-.env.production.local
 .env.local
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -102,7 +101,6 @@ dist
 
 # vuepress v2.x temp and cache directory
 .temp
-.cache
 
 # Docusaurus cache and generated files
 .docusaurus

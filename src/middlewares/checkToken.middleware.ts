@@ -9,8 +9,6 @@ export const checkToken = (req, _res, next) => {
   try {
     req.user = jwt.verify(token.split(" ")[1], process.env.JWT_TOKEN);
   } catch (err) {
-    console.log(err);
-
     throw new APIError(498, `Invalid authorization token.`);
   }
 

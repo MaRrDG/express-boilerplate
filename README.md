@@ -23,7 +23,7 @@ This boilerplate has security through JWT Token, which is obtained when a user l
 ## Environment Variables
 
 - `.env.development.local` - for the development environment.
-- `.env` - for the production environment.
+- `.env.production.local` - for the production environment.
 
 ## Getting Started
 

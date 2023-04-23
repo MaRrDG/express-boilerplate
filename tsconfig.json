@@ -30,6 +30,8 @@
       "@utils/*": ["utils/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.json", ".env"],
+  "include": ["src/**/*.ts", "src/**/*.json",
+    ".env.production.local"
+  ],
   "exclude": ["node_modules"]
 }
