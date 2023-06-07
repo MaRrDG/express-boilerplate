@@ -36,6 +36,7 @@ class UserService implements GenericService {
       const updateUserById: User = await this.users.findByIdAndUpdate(
         params.resourceId,
         data,
+        { new: true },
       );
       if (!updateUserById) throw new APIError(409, "User doesn't exist");
 
@@ -64,7 +65,9 @@ class UserService implements GenericService {
       const updateUserById: User = await this.users.findByIdAndUpdate(
         params.resourceId,
         data,
+        { new: true },
       );
+
       if (!updateUserById) throw new APIError(409, "User doesn't exist");
 
       return updateUserById;
